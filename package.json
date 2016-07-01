@@ -1,0 +1,21 @@
+{
+  "name": "react-i18n",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/i18n.js",
+  "scripts": {
+    "test": "mocha test/test.js --compilers js:babel-register"
+  },
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "babel-register": "^6.9.0",
+    "mocha": "^2.5.3",
+    "react-dom": "^15.1.0"
+  },
+  "dependencies": {
+    "jed": "^1.1.0",
+    "react": "^15.1.0",
+    "underscore": "^1.8.3"
+  }
+}
