@@ -5,21 +5,23 @@
 import {t, tct} from './src/i18n'
 
 class App extends React.Component {
-  render() => <div>
-    {
-      tct('hello! click [link:here]', {
-        root: <span/>,
-        link: <a href="#"/>
-      })
-    }
-    <hr/>
-    {
-      t('%{author}s assigned this event to %{assignee}s', {
-        author: 'example',
-        assignee: <b>example@example.com</b>
-      })
-    }
-  </div>
+  render() {
+    return <div>
+      {
+        tct('hello! click [link:here]', {
+          root: <span/>,
+          link: <a href="#"/>
+        })
+      }
+      <hr/>
+      {
+        t('%{author}s assigned this event to %{assignee}s', {
+          author: 'example',
+          assignee: <b>example@example.com</b>
+        })
+      }
+    </div>
+  }
 }
 ```
 
