@@ -1,5 +1,5 @@
 import Jed from 'jed';
-import React from 'react';
+import React, {Text} from 'react-native';
 import {sprintf} from './sprintf-js-mod';
 import _ from 'lodash';
 
@@ -60,9 +60,9 @@ function formatForReact(formatString, args) {
       } else {
         match[2] = null;
         match[1] = 1;
-        rv.push(<span key={idx++}>
+        rv.push(<Text key={idx++}>
           {sprintf.format([match], [null, arg])}
-        </span>);
+        </Text>);
       }
     }
   });
@@ -142,7 +142,7 @@ export function renderComponentTemplate(template, components) {
 
     (template[group] || []).forEach((item) => {
       if (_.isString(item)) {
-        children.push(<span key={idx++}>{item}</span>);
+        children.push(<Text key={idx++}>{item}</Text>);
       } else {
         children.push(renderGroup(item.group));
       }
@@ -150,9 +150,9 @@ export function renderComponentTemplate(template, components) {
 
     // in case we cannot find our component, we call back to an empty
     // span so that stuff shows up at least.
-    let reference = components[group] || <span key={idx++}/>;
+    let reference = components[group] || <Text key={idx++}/>;
     if (!React.isValidElement(reference)) {
-      reference = <span key={idx++}>{reference}</span>;
+      reference = <Text key={idx++}>{reference}</Text>;
     }
 
     if (children.length > 0) {
@@ -172,7 +172,7 @@ function mark(rv) {
 
   let proxy = {
     $$typeof: Symbol.for('react.element'),
-    type: 'span',
+    type: 'Text',
     key: null,
     ref: null,
     props: {
