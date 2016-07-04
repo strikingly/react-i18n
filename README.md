@@ -12,22 +12,22 @@ import {
   tn, 
   t, 
   __, 
-} from 'react-i18n'
+} from 'r-i18n'
 ```
 
 ## Samples
 
-### `init`
+#### `init`
 Use [Jed](http://slexaxton.github.io/Jed) to initialize i18n in your project.
 
 ```jsx
 init({ /* jed options */ })) 
 ```
 
-### `translate` (alias `__`)
+#### `translate` (alias `__`)
 
 ```jsx
-import {__} from 'react-i18n'
+import {__} from 'r-i18n'
 
 __('Welcome to Strikingly')  
 // -> '欢迎使用 Strikingly'
@@ -51,7 +51,7 @@ More info about sprintfjs: [link](https://github.com/alexei/sprintf.js).
 Component as placeholder
 
 ```jsx
-import {t} from 'react-i18n'
+import {t} from 'r-i18n'
 
 //...
 
@@ -68,7 +68,7 @@ t('%{author}s assigned this event to %{assignee}s', {
 HTML inside translated string with a root wrapper
 
 ```jsx
-import {tct} from 'react-i18n'
+import {tct} from 'r-i18n'
 
 //...
 
@@ -84,7 +84,7 @@ tct('Welcome. Click [link:here]', {
 Wrap `t` and `tct` with a wrapper `<span class="translation-wrapper"/>`
 
 ```jsx
-import {tct, setDebug} from 'react-i18n'
+import {tct, setDebug} from 'r-i18n'
 
 //...
 
