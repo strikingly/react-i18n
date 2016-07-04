@@ -9,6 +9,6 @@
   "dependencies": {
     "jed": "^1.1.0",
     "lodash": "^4.13.1",
-    "react-native": "^15.1.0"
+    "react-native": "^0.26.3"
   }
 }
