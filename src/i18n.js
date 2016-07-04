@@ -1,26 +1,20 @@
 import Jed from 'jed';
 import React from 'react';
 import {sprintf} from './sprintf-js-mod';
-import _ from 'underscore';
+import _ from 'lodash';
 
 const DOMAIN = 'i18n';
 
 let LOCALE_DEBUG = false;
 
-if (sessionStorage && sessionStorage.getItem('localeDebug') == '1') {
-  LOCALE_DEBUG = true;
-}
-
-export function setLocaleDebug(value) {
-  sessionStorage.setItem('localeDebug', value ? '1' : '0');
-  /*eslint no-console:0*/
-  console.log('Locale debug is: ', value ? 'on' : 'off', '. Reload page to apply changes!');
-}
-
 let i18n = null;
 
 export function setLocale(jedInstance) {
   i18n = jedInstance;
+}
+
+export function setDebug() {
+  LOCALE_DEBUG = true;
 }
 
 setLocale(new Jed({

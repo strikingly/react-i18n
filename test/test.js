@@ -8,10 +8,6 @@ let debug = '0'
 
 describe('i18n', () => {
   before(() => {
-    // setup the browser environment
-    global.sessionStorage = {
-      getItem: () => debug
-    }
     i18n = require('../src/i18n')
   })
 
@@ -68,11 +64,7 @@ describe('i18n', () => {
   })
 
   it('should return debugging wrapper', () => {
-    // set debug flag, reload module
-    delete require.cache[require.resolve('../src/i18n')]
-    debug = '1'
-    i18n = require('../src/i18n')
-
+    i18n.setDebug()
     assert(ReactDOMServer.renderToStaticMarkup(i18n.tct('lorem [li] ipsum', {
         root: <div/>,
         li: <b>hey</b>

@@ -2,7 +2,7 @@
 
 ## Demo
 ```jsx
-import {t, tct} from './src/i18n'
+import {t, tct} from './index'
 
 class App extends React.Component {
   render() {
@@ -27,19 +27,9 @@ class App extends React.Component {
 
 ## locale (using `jed`)
 ```jsx
-import Jed from 'jed'
-import {setLocale} from './src/i18n'
+import {init} from './index'
 
-setLocale(new Jed({ /* jed options */ }))
-```
-
-## debugging mode
-```jsx
-import Jed from 'jed'
-import {setLocale} from './src/i18n'
-
-setLocaleDebug(true)
-// reload the page to apply
+init({ /* jed options */ }))
 ```
 
 ## License
