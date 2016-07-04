@@ -8,6 +8,7 @@ const DOMAIN = 'i18n';
 let LOCALE_DEBUG = false;
 
 let i18n = null;
+let _cache = {};
 
 export function setLocale(jedInstance) {
   i18n = jedInstance;
@@ -198,8 +199,12 @@ export function format(formatString, args) {
   }
 }
 
+export function _gettext(string) {
+  return _cache[string] || (_cache[string] = i18n.gettext(string));
+}
+
 export function gettext(string, ...args) {
-  let rv = i18n.gettext(string);
+  let rv = _gettext(string);
   if (args.length > 0) {
     rv = format(rv, args);
   }
