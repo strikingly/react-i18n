@@ -61,9 +61,9 @@ function formatForReact(formatString, args) {
       } else {
         match[2] = null;
         match[1] = 1;
-        rv.push(<Text key={idx++}>
+        rv.push(<span key={idx++}>
           {sprintf.format([match], [null, arg])}
-        </Text>);
+        </span>);
       }
     }
   });
@@ -83,7 +83,7 @@ function argsInvolveReact(args) {
   return false;
 }
 
-export function parseComponentTemplate(string) {
+function parseComponentTemplate(string) {
   let rv = {};
 
   function process(startPos, group, inGroup) {
@@ -135,7 +135,7 @@ export function parseComponentTemplate(string) {
   return rv;
 }
 
-export function renderComponentTemplate(template, components) {
+function renderComponentTemplate(template, components) {
   let idx = 0;
 
   function renderGroup(group) {
@@ -143,7 +143,7 @@ export function renderComponentTemplate(template, components) {
 
     (template[group] || []).forEach((item) => {
       if (_.isString(item)) {
-        children.push(<Text key={idx++}>{item}</Text>);
+        children.push(<span key={idx++}>{item}</span>);
       } else {
         children.push(renderGroup(item.group));
       }
@@ -151,9 +151,9 @@ export function renderComponentTemplate(template, components) {
 
     // in case we cannot find our component, we call back to an empty
     // span so that stuff shows up at least.
-    let reference = components[group] || <Text key={idx++}/>;
+    let reference = components[group] || <span key={idx++}/>;
     if (!React.isValidElement(reference)) {
-      reference = <Text key={idx++}>{reference}</Text>;
+      reference = <span key={idx++}>{reference}</span>;
     }
 
     if (children.length > 0) {
@@ -173,7 +173,7 @@ function mark(rv) {
 
   let proxy = {
     $$typeof: Symbol.for('react.element'),
-    type: 'Text',
+    type: 'span',
     key: null,
     ref: null,
     props: {
@@ -191,7 +191,11 @@ function mark(rv) {
   return proxy;
 }
 
-export function format(formatString, args) {
+function cacheGettext(string) {
+  return _cache[string] || (_cache[string] = i18n.gettext(string));
+}
+
+function format(formatString, args) {
   if (argsInvolveReact(args)) {
     return formatForReact(formatString, args);
   } else {
@@ -199,14 +203,10 @@ export function format(formatString, args) {
   }
 }
 
-export function _gettext(string) {
-  return _cache[string] || (_cache[string] = i18n.gettext(string));
-}
-
 export function gettext(string, ...args) {
-  let rv = _gettext(string);
+  let rv = cacheGettext(string);
   if (args.length > 0) {
-    rv = format(rv, args);
+  	rv = format(rv, args)
   }
   return mark(rv);
 }
