@@ -15,28 +15,23 @@ describe('i18n', () => {
     assert(i18n.t('lorem ipsum') === 'lorem ipsum')
     // returns 'lorem ipsum'
 
-    assert(i18n.t('settings|lorem ipsum') === 'lorem ipsum')
-    // returns 'lorem ipsum'
-
-    assert(i18n.t('%{li}s', {li: <p>lorem ipsum</p>})[0].$$typeof === Symbol.for('react.element'))
+    assert(i18n.t('%{li}', {li: <p>lorem ipsum</p>})[0].$$typeof === Symbol.for('react.element'))
     // returns [<p>lorem ipsum</p>]
 
-    assert(i18n.t('lorem %{li}s ipsum', {li: <p>lorem ipsum</p>}).length === 3)
+    assert(i18n.t('lorem %{li} ipsum', {li: <p>lorem ipsum</p>}).length === 3)
     // returns ['lorem', <p>lorem ipsum</p>, 'ipsum']
   })
 
   it('should return templated strings', () => {
-    assert(i18n.t('%{l}s', {l: 'lorem'}) === 'lorem');
-    assert(i18n.t('%{l}s %{i}s', {
+    assert(i18n.t('%{l}', {l: 'lorem'}) === 'lorem')
+    assert(i18n.t('%{l} %{i}', {
         l: 'lorem',
         i: 'ipsum'
-      }) === 'lorem ipsum');
-    assert(i18n.t('%{li}j', {li: ['lorem', 'ipsum']}) === '["lorem","ipsum"]')
-
-    assert(i18n.t('%{author}s assigned this event to %{assignee}s', {
+      }) === 'lorem ipsum')
+    assert(i18n.t('%{author} assigned this event to %{assignee}', {
       author: <p>example</p>,
       assignee: <em>example@example.com</em>
-    }))
+    })[1] === ' assigned this event to ')
   })
 
   it('should return wrapped react components', () => {
@@ -64,9 +59,7 @@ describe('i18n', () => {
     })
 
     assert(i18n.t('hello') === 'bonjour')
-  })
 
-  it('should works with __', () => {
     i18n.init({
       'domain': 'i18n',
       'missing_key_callback': function (key) {
@@ -78,18 +71,16 @@ describe('i18n', () => {
             'lang': 'fr',
             'plural_forms': 'nplurals=2; plural=(n != 1);'
           },
-          'hello %{name}': ['bonjour %{name}'],
-          'main|hello %{name}': ['bonjour %{name}!!!']
+          'hello %{name}': ['bonjour %{name}']
         }
       }
     })
 
-    assert(i18n.__('hello %{name}', {name: 'world'}) === 'bonjour world')
-    assert(i18n.__('main|hello %{name}', {name: 'world'}) === 'bonjour world!!!')
+    assert(i18n.t('hello %{name}', {name: 'world'}) === 'bonjour world')
   })
 
   it('should return debugging wrapper', () => {
-    i18n.setDebug()
+    i18n.debug()
     assert(ReactDOMServer.renderToStaticMarkup(i18n.tct('lorem [li] ipsum', {
         root: <div/>,
         li: <b>hey</b>
