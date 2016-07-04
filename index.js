@@ -2,19 +2,9 @@
 
 import Jed from 'jed'
 import _ from 'lodash'
-import {t as _t, tn, tct, setLocale} from './src/i18n'
-
-let _cache = {}
+import {_gettext, t as _t, tn, tct, setLocale, setDebug} from './src/i18n'
 
 const init = (m) => setLocale(new Jed(m))
-
-const translate = (message, values) => {
-  if (values) {
-    return removeNamespace(gettext(message, values))
-  } else {
-    return _cache[message] || (_cache[message] = removeNamespace(gettext(message)))
-  }
-}
 
 const removeNamespace = (message) => {
   if (_.isString(message)) {
@@ -24,9 +14,14 @@ const removeNamespace = (message) => {
   }
 }
 
-const interpolate = gettext
+const t = (message, values) => removeNamespace(gettext(message, values))
 
-const gettext = (message, values = {}) => {
+const __ = (message, values={}) => removeNamespace(interpolate(_gettext(message), values))
+
+const interpolate = (message, values={}) =>
+  _.template(message, {interpolate: /%\{([\s\S]+?)\}/})(values)
+
+const gettext = (message, values={}) => {
   if (typeof __SERVER_RENDERING__ !== 'undefined') {
     return message
   }
@@ -43,7 +38,7 @@ const gettext = (message, values = {}) => {
   }
 }
 
-const ngettext = (...args) => tn(...args)
-const t = translate
+const ngettext = tn
+const translate = __
 
-export {init, translate, removeNamespace, interpolate, gettext, ngettext, tct, t}
+export {init, setDebug, translate, removeNamespace, gettext, ngettext, tct, tn, t, __}
