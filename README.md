@@ -6,12 +6,10 @@
 import React from 'react'
 
 import {
-  setDebug, 
   init, 
+  debug, 
   tct, 
-  tn, 
   t, 
-  __, 
 } from 'r-i18n'
 ```
 
@@ -24,28 +22,6 @@ Use [Jed](http://slexaxton.github.io/Jed) to initialize i18n in your project.
 init({ /* jed options */ })) 
 ```
 
-#### `translate` (alias `__`)
-
-```jsx
-import {__} from 'r-i18n'
-
-__('Welcome to Strikingly')  
-// -> '欢迎使用 Strikingly'
-
-__('Home|Welcome to Strikingly')  
-// remove namespace
-// -> '欢迎使用 Strikingly'
-
-__('Welcome to Strikingly. Click <a href="%{location}">here to continue</a>.', { location: 'http://www.strikingly.com/s/select_template' }) 
-// -> '欢迎使用 Strikingly。<a href="http://www.strikingly.com/s/select_template">按此继续</a>。'
-```
-
-### React
-
-Note that you need to use sprintf style templates (`'%{value}s'`) instead of simple interpolate `'%{value}'`.
-
-More info about sprintfjs: [link](https://github.com/alexei/sprintf.js).
-
 #### `t`
 
 Component as placeholder
@@ -53,13 +29,18 @@ Component as placeholder
 ```jsx
 import {t} from 'r-i18n'
 
-//...
+t('Welcome to Strikingly')  
+// -> '欢迎使用 Strikingly'
 
-t('%{author}s assigned this event to %{assignee}s', {
+t('Welcome to Strikingly. Click <a href="%{location}">here to continue</a>.', { location: 'http://www.strikingly.com/s/select_template' }) 
+// -> '欢迎使用 Strikingly。<a href="http://www.strikingly.com/s/select_template">按此继续</a>。'
+
+// React component as placeholder
+
+t('%{author} assigned this event to %{assignee}', {
   author: <Author value={author} />,
   assignee: <em>example@example.com</em>
 })
-// React components
 // -> [<Author value={author} />, ' assigned this event to ', <em>example@example.com</em>]
 ```
 
@@ -84,11 +65,11 @@ tct('Welcome. Click [link:here]', {
 Wrap `t` and `tct` with a wrapper `<span class="translation-wrapper"/>`
 
 ```jsx
-import {tct, setDebug} from 'r-i18n'
+import {tct, debug} from 'r-i18n'
 
 //...
 
-setDebug()
+debug()
 
 tct('Welcome. Click [link:here]', {
   root: <p/>,

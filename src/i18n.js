@@ -83,7 +83,7 @@ function argsInvolveReact(args) {
   return false;
 }
 
-export function parseComponentTemplate(string) {
+function parseComponentTemplate(string) {
   let rv = {};
 
   function process(startPos, group, inGroup) {
@@ -135,7 +135,7 @@ export function parseComponentTemplate(string) {
   return rv;
 }
 
-export function renderComponentTemplate(template, components) {
+function renderComponentTemplate(template, components) {
   let idx = 0;
 
   function renderGroup(group) {
@@ -191,7 +191,11 @@ function mark(rv) {
   return proxy;
 }
 
-export function format(formatString, args) {
+function cacheGettext(string) {
+  return _cache[string] || (_cache[string] = i18n.gettext(string));
+}
+
+function format(formatString, args) {
   if (argsInvolveReact(args)) {
     return formatForReact(formatString, args);
   } else {
@@ -199,14 +203,10 @@ export function format(formatString, args) {
   }
 }
 
-export function _gettext(string) {
-  return _cache[string] || (_cache[string] = i18n.gettext(string));
-}
-
 export function gettext(string, ...args) {
-  let rv = _gettext(string);
+  let rv = cacheGettext(string);
   if (args.length > 0) {
-    rv = format(rv, args);
+  	rv = format(rv, args)
   }
   return mark(rv);
 }
