@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {},
   "author": "",
-  "license": ""
+  "license": "",
   "dependencies": {
     "jed": "^1.1.0",
     "lodash": "^4.13.1",
