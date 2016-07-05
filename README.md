@@ -1,10 +1,17 @@
 # react-i18n
 
-[https://github.com/strikingly/react-i18n](https://github.com/strikingly/react-i18n) with React Native
+React Native i18n
 
-## Usage
+`npm i rn-i18n --save`
 
 See [https://github.com/strikingly/react-i18n](https://github.com/strikingly/react-i18n).
+
+### React Native
+
+React-i18n works both with React and React Native.  
+For React Native, use `npm i rn-i18n --save`.
+
+React Native branch: [react-native](https://github.com/strikingly/react-i18n/tree/react-native)
 
 ## Acknowledgement
 
