@@ -3,7 +3,7 @@ import Jed from 'jed'
 import ReactDOMServer from 'react-dom/server'
 import assert from 'assert'
 
-let i18n = require('../index')
+let i18n = require('../')
 let debug = '0'
 
 describe('i18n', () => {
