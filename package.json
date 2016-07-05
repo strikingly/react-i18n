@@ -1,11 +1,11 @@
 {
   "name": "r-i18n",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha test/test.es6 --compilers js:babel-register",
-    "build": "/node_modules/.bin/babel src -d lib"
+    "build": "./node_modules/.bin/babel src -d lib"
   },
   "author": "",
   "license": "",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "jed": "^1.1.0",
-    "lodash": "^4.13.1",
+    "lodash": "^3.3.1",
     "react": "^15.1.0"
   }
 }
