@@ -3,14 +3,10 @@ import Jed from 'jed'
 import ReactDOMServer from 'react-dom/server'
 import assert from 'assert'
 
-let i18n = null
+let i18n = require('../index')
 let debug = '0'
 
 describe('i18n', () => {
-  before(() => {
-    i18n = require('../index')
-  })
-
   it('should return i18n strings or react components', () => {
     assert(i18n.t('lorem ipsum') === 'lorem ipsum')
     // returns 'lorem ipsum'
