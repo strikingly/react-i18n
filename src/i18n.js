@@ -1,5 +1,6 @@
 import Jed from 'jed';
-import React, {Text} from 'react-native';
+import React from 'react';
+import {Text} from 'react-native';
 import {sprintf} from './sprintf-js-mod';
 import _ from 'lodash';
 
