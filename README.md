@@ -1,5 +1,9 @@
 # react-i18n
 
+React i18n
+
+`npm i r-i18n --save`
+
 ## Usage
 
 ```jsx
