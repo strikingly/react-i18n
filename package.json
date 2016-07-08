@@ -1,6 +1,6 @@
 {
   "name": "r-i18n",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -9,6 +9,10 @@
   },
   "author": "",
   "license": "",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/strikingly/react-i18n.git"
+  },
   "devDependencies": {
     "babel-cli": "^6.10.1",
     "babel-preset-es2015": "^6.9.0",
