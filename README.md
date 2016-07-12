@@ -36,8 +36,8 @@ import {t} from 'r-i18n'
 t('Welcome to Strikingly')  
 // -> '欢迎使用 Strikingly'
 
-t('Welcome to Strikingly. Click <a href="%{location}">here to continue</a>.', { location: 'http://www.strikingly.com/s/select_template' }) 
-// -> '欢迎使用 Strikingly。<a href="http://www.strikingly.com/s/select_template">按此继续</a>。'
+t('Welcome to Strikingly, %{username}', { username: 'Shu' }) 
+// -> '欢迎使用 Strikingly，Shu'
 
 // React component as placeholder
 
