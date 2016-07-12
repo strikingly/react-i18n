@@ -82,9 +82,23 @@ describe('i18n', () => {
       })) === '<span class="translation-wrapper"><div><span>lorem </span><b>hey</b><span> ipsum</span></div></span>')
   })
 
-  it('should return some emoji chars when debugging with toString()', () => {
+  it('should return some emoji chars when debugging with tct & toString()', () => {
     assert(i18n.tct('hello', {
         root: <span/>
-      }).toString() === '🇦🇹[object Object]🇦🇹')
+      }).toString() === '🇦🇹 [object Object] 🇦🇹')
+  })
+
+  it('should return an array with a flag emoji when debugging with __ & react args', () => {
+    assert(ReactDOMServer.renderToStaticMarkup(
+      <div>{i18n.t('lorem %{li} ipsum', {
+        li: <b>hey</b>
+      })}</div>
+    ) === '<div>lorem <b>hey</b> ipsum 🇦🇹</div>')
+  })
+
+  it('should return a string with a flag emoji when debugging with __ & raw strings', () => {
+    assert(i18n.t('lorem %{li} ipsum', {
+      li: 'hey'
+    }) === 'lorem hey ipsum 🇦🇹')
   })
 })

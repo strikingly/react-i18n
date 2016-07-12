@@ -171,24 +171,36 @@ function mark(rv) {
     return rv;
   }
 
-  let proxy = {
-    $$typeof: Symbol.for('react.element'),
-    type: 'span',
-    key: null,
-    ref: null,
-    props: {
-      className: 'translation-wrapper',
-      children: _.isArray(rv) ? rv : [rv]
-    },
-    _owner: null,
-    _store: {}
-  };
+  // 3 cases
+  if (React.isValidElement(rv)) {
+    // Returning a component is allowed here
+    let proxy = {
+      $$typeof: Symbol.for('react.element'),
+      type: 'span',
+      key: null,
+      ref: null,
+      props: {
+        className: 'translation-wrapper',
+        children: _.isArray(rv) ? rv : [rv]
+      },
+      _owner: null,
+      _store: {}
+    };
 
-  proxy.toString = function () {
-    return '🇦🇹' + rv + '🇦🇹';
-  };
+    proxy.toString = function () {
+      return '🇦🇹 ' + rv + ' 🇦🇹';
+    };
 
-  return proxy;
+    return proxy;
+
+  } else if (_.isArray(rv)) {
+    // Need to be wrapped by another component
+    return [...rv, ' 🇦🇹'];
+
+  } else {
+    // Returning a raw string (in props/state/...)
+    return rv + ' 🇦🇹';
+  }
 }
 
 function cacheGettext(string) {
