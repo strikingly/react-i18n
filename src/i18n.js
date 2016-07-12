@@ -172,24 +172,17 @@ function mark(rv) {
     return rv;
   }
 
-  let proxy = {
-    $$typeof: Symbol.for('react.element'),
-    type: 'Text',
-    key: null,
-    ref: null,
-    props: {
-      className: 'translation-wrapper',
-      children: _.isArray(rv) ? rv : [rv]
-    },
-    _owner: null,
-    _store: {}
-  };
-
-  proxy.toString = function () {
-    return '🇦🇹' + rv + '🇦🇹';
-  };
-
-  return proxy;
+  // 3 cases
+  if (React.isValidElement(rv)) {
+    // Returning a component is allowed here
+    return <Text>{rv} 🇦🇹</Text>;
+  } else if (_.isArray(rv)) {
+    // Need to be wrapped
+    return [...rv, ' 🇦🇹'];
+  } else {
+    // Returning a raw string
+    return rv + ' 🇦🇹';
+  }
 }
 
 function cacheGettext(string) {
@@ -207,7 +200,7 @@ function format(formatString, args) {
 export function gettext(string, ...args) {
   let rv = cacheGettext(string);
   if (args.length > 0) {
-  	rv = format(rv, args)
+    rv = format(rv, args)
   }
   return mark(rv);
 }
