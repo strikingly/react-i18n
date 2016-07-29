@@ -19,14 +19,14 @@ import {
 
 ## Samples
 
-#### `init`
+#### init
 Use [Jed](http://slexaxton.github.io/Jed) to initialize i18n in your project.
 
 ```jsx
 init({ /* jed options */ })) 
 ```
 
-#### `t`
+#### t
 
 Component as placeholder
 
@@ -48,7 +48,7 @@ t('%{author} assigned this event to %{assignee}', {
 // -> [<Author value={author} />, ' assigned this event to ', <em>example@example.com</em>]
 ```
 
-#### `tct`
+#### tct
 
 HTML inside translated string with a root wrapper
 
@@ -68,6 +68,8 @@ tct('Welcome. Click [link:here]', {
 
 Wrap `t` and `tct` with a wrapper `<span class="translation-wrapper"/>`
 
+(for React Native, it just appends a flag emoji to the message)
+
 ```jsx
 import {tct, debug} from 'r-i18n'
 
@@ -84,12 +86,19 @@ tct('Welcome. Click [link:here]', {
 //    </span>
 ```
 
-### React Native
+## React Native
 
 React-i18n works both with React and React Native.  
 For React Native, use `npm i rn-i18n --save`.
 
 React Native branch: [react-native](https://github.com/strikingly/react-i18n/tree/react-native)
+
+## Syntax
+
+r-i18n uses `%{}` to pass args.  
+__And use `%%` to escape `%`__.
+
+i.e. `t('%{percentage}%% correct', { percentage: 100 }) -> '100% correct'`
 
 ## Acknowledgement
 
