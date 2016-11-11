@@ -10,28 +10,45 @@ let LOCALE_DEBUG = false;
 let i18n = null;
 let _cache = {};
 
-export function setLocale(jedInstance) {
-  i18n = jedInstance;
+export function setLocale(options) {
+  if (options.noPo) {
+    i18n = false
+  } else {
+    let jedInstance = options
+    i18n = createJed(jedInstance );
+  }
 }
 
 export function setDebug() {
   LOCALE_DEBUG = true;
 }
 
-setLocale(new Jed({
-  'domain': DOMAIN,
-  'missing_key_callback': function (key) {
-  },
-  'locale_data': {
-    [DOMAIN]: {
-      '': {
-        'domain': DOMAIN,
-        'lang': 'en',
-        'plural_forms': 'nplurals=2; plural=(n != 1);'
+function createJed(jedOptions) {
+  jedOptions = jedOptions || {
+    'domain': DOMAIN,
+    'missing_key_callback': function (key) {
+    },
+    'locale_data': {
+      [DOMAIN]: {
+        '': {
+          'domain': DOMAIN,
+          'lang': 'en',
+          'plural_forms': 'nplurals=2; plural=(n != 1);'
+        }
       }
     }
   }
-}));
+
+  return new Jed(jedOptions)
+}
+
+function getTranslate(stringKey) {
+  if (i18n) {
+    return i18n.gettext(stringKey)
+  }
+
+  return stringKey
+}
 
 function formatForReact(formatString, args) {
   let rv = [];
@@ -204,7 +221,7 @@ function mark(rv) {
 }
 
 function cacheGettext(string) {
-  return _cache[string] || (_cache[string] = i18n.gettext(string));
+  return _cache[string] || (_cache[string] = getTranslate(string));
 }
 
 function format(formatString, args) {
@@ -238,7 +255,7 @@ export function ngettext(singular, plural, ...args) {
  the root string is always called "root", the rest is prefixed
  with the name in the brackets */
 export function gettextComponentTemplate(template, components) {
-  let tmpl = parseComponentTemplate(i18n.gettext(template));
+  let tmpl = parseComponentTemplate(getTranslate(template));
   return mark(renderComponentTemplate(tmpl, components));
 }
 

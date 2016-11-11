@@ -72,6 +72,10 @@ describe('i18n', () => {
     })
 
     assert(i18n.t('hello %{name}', {name: 'world'}) === 'bonjour world')
+
+    i18n.init({noPo: true})
+
+    assert(i18n.t('Beijin %{name}') === 'Beijin %{name}')
   })
 
   it('should return debugging wrapper', () => {
