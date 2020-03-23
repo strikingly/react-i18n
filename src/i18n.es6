@@ -1,21 +1,20 @@
-import Jed from 'jed';
-import React from 'react';
-import {sprintf} from './sprintf-js-mod';
-import _ from 'lodash';
+import Jed from "jed";
+import React from "react";
+import { sprintf } from "./sprintf-js-mod";
+import _ from "lodash";
 
-const DOMAIN = 'i18n';
+const DOMAIN = "i18n";
 
 let LOCALE_DEBUG = false;
 
 let i18n = null;
-let _cache = {};
 
 export function setLocale(options) {
   if (options.noPo) {
-    i18n = false
+    i18n = false;
   } else {
-    let jedInstance = options
-    i18n = createJed(jedInstance );
+    let jedInstance = options;
+    i18n = createJed(jedInstance);
   }
 }
 
@@ -25,29 +24,28 @@ export function setDebug() {
 
 function createJed(jedOptions) {
   jedOptions = jedOptions || {
-    'domain': DOMAIN,
-    'missing_key_callback': function (key) {
-    },
-    'locale_data': {
+    domain: DOMAIN,
+    missing_key_callback: function(key) {},
+    locale_data: {
       [DOMAIN]: {
-        '': {
-          'domain': DOMAIN,
-          'lang': 'en',
-          'plural_forms': 'nplurals=2; plural=(n != 1);'
+        "": {
+          domain: DOMAIN,
+          lang: "en",
+          plural_forms: "nplurals=2; plural=(n != 1);"
         }
       }
     }
-  }
+  };
 
-  return new Jed(jedOptions)
+  return new Jed(jedOptions);
 }
 
 function getTranslate(stringKey) {
   if (i18n) {
-    return i18n.gettext(stringKey)
+    return i18n.gettext(stringKey);
   }
 
-  return stringKey
+  return stringKey;
 }
 
 function formatForReact(formatString, args) {
@@ -70,7 +68,7 @@ function formatForReact(formatString, args) {
 
       // this points to a react element!
       if (React.isValidElement(arg)) {
-        rv.push(React.cloneElement(arg, {key: idx}));
+        rv.push(React.cloneElement(arg, { key: idx }));
         // not a react element, fuck around with it so that sprintf.format
         // can format it for us.  We make sure match[2] is null so that we
         // do not go down the object path, and we set match[1] to the first
@@ -78,9 +76,9 @@ function formatForReact(formatString, args) {
       } else {
         match[2] = null;
         match[1] = 1;
-        rv.push(<span key={idx++}>
-          {sprintf.format([match], [null, arg])}
-        </span>);
+        rv.push(
+          <span key={idx++}>{sprintf.format([match], [null, arg])}</span>
+        );
       }
     }
   });
@@ -93,7 +91,7 @@ function argsInvolveReact(args) {
     return true;
   }
   if (args.length == 1 && _.isObject(args[0])) {
-    return Object.keys(args[0]).some((key) => {
+    return Object.keys(args[0]).some(key => {
       return React.isValidElement(args[0][key]);
     });
   }
@@ -109,14 +107,15 @@ function parseComponentTemplate(string) {
     let buf = [];
     let satisfied = false;
 
-    let pos = regex.lastIndex = startPos;
-    while ((match = regex.exec(string)) !== null) { // eslint-disable-line no-cond-assign
+    let pos = (regex.lastIndex = startPos);
+    while ((match = regex.exec(string)) !== null) {
+      // eslint-disable-line no-cond-assign
       let substr = string.substr(pos, match.index - pos);
-      if (substr !== '') {
+      if (substr !== "") {
         buf.push(substr);
       }
 
-      if (match[0] == ']') {
+      if (match[0] == "]") {
         if (inGroup) {
           satisfied = true;
           break;
@@ -126,12 +125,12 @@ function parseComponentTemplate(string) {
         }
       }
 
-      if (match[2] == ']') {
+      if (match[2] == "]") {
         pos = regex.lastIndex;
       } else {
         pos = regex.lastIndex = process(regex.lastIndex, match[1], true);
       }
-      buf.push({group: match[1]});
+      buf.push({ group: match[1] });
     }
 
     let endPos = regex.lastIndex;
@@ -147,7 +146,7 @@ function parseComponentTemplate(string) {
     return endPos;
   }
 
-  process(0, 'root', false);
+  process(0, "root", false);
 
   return rv;
 }
@@ -158,7 +157,7 @@ function renderComponentTemplate(template, components) {
   function renderGroup(group) {
     let children = [];
 
-    (template[group] || []).forEach((item) => {
+    (template[group] || []).forEach(item => {
       if (_.isString(item)) {
         children.push(<span key={idx++}>{item}</span>);
       } else {
@@ -168,19 +167,19 @@ function renderComponentTemplate(template, components) {
 
     // in case we cannot find our component, we call back to an empty
     // span so that stuff shows up at least.
-    let reference = components[group] || <span key={idx++}/>;
+    let reference = components[group] || <span key={idx++} />;
     if (!React.isValidElement(reference)) {
       reference = <span key={idx++}>{reference}</span>;
     }
 
     if (children.length > 0) {
-      return React.cloneElement(reference, {key: idx++}, children);
+      return React.cloneElement(reference, { key: idx++ }, children);
     } else {
-      return React.cloneElement(reference, {key: idx++});
+      return React.cloneElement(reference, { key: idx++ });
     }
   }
 
-  return renderGroup('root');
+  return renderGroup("root");
 }
 
 function mark(rv) {
@@ -192,36 +191,30 @@ function mark(rv) {
   if (React.isValidElement(rv)) {
     // Returning a component is allowed here
     let proxy = {
-      $$typeof: Symbol.for('react.element'),
-      type: 'span',
+      $$typeof: Symbol.for("react.element"),
+      type: "span",
       key: null,
       ref: null,
       props: {
-        className: 'translation-wrapper',
+        className: "translation-wrapper",
         children: _.isArray(rv) ? rv : [rv]
       },
       _owner: null,
       _store: {}
     };
 
-    proxy.toString = function () {
-      return '🇦🇹 ' + rv + ' 🇦🇹';
+    proxy.toString = function() {
+      return "🇦🇹 " + rv + " 🇦🇹";
     };
 
     return proxy;
-
   } else if (_.isArray(rv)) {
     // Need to be wrapped by another component
-    return [...rv, ' 🇦🇹'];
-
+    return [...rv, " 🇦🇹"];
   } else {
     // Returning a raw string (in props/state/...)
-    return rv + ' 🇦🇹';
+    return rv + " 🇦🇹";
   }
-}
-
-function cacheGettext(string) {
-  return _cache[string] || (_cache[string] = getTranslate(string));
 }
 
 function format(formatString, args) {
@@ -233,9 +226,9 @@ function format(formatString, args) {
 }
 
 export function gettext(string, ...args) {
-  let rv = cacheGettext(string);
+  let rv = getTranslate(string);
   if (args.length > 0) {
-  	rv = format(rv, args)
+    rv = format(rv, args);
   }
   return mark(rv);
 }
