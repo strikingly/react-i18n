@@ -1,8 +1,10 @@
 'use strict'
 
-import {setLocale, setDebug, tct, tn, t} from './i18n'
+import {setDebug, I18n} from './i18n'
 
-const init = m => setLocale(m)
+const createI18n = m => new I18n(m)
+const init = createI18n
+
 const debug = setDebug
 
-export {init, debug, tct, tn, t}
+export {init, createI18n, debug }

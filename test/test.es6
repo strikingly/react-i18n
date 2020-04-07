@@ -3,7 +3,9 @@ import Jed from 'jed'
 import ReactDOMServer from 'react-dom/server'
 import assert from 'assert'
 
-let i18n = require('../')
+const { createI18n, debug } = require('../')
+
+let i18n = createI18n()
 
 describe('i18n', () => {
   it('should return i18n strings or react components', () => {
@@ -79,7 +81,7 @@ describe('i18n', () => {
   })
 
   it('should return debugging wrapper', () => {
-    i18n.debug()
+    debug()
     assert(ReactDOMServer.renderToStaticMarkup(i18n.tct('lorem [li] ipsum', {
         root: <div/>,
         li: <b>hey</b>

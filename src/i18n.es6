@@ -7,17 +7,6 @@ const DOMAIN = "i18n";
 
 let LOCALE_DEBUG = false;
 
-let i18n = null;
-
-export function setLocale(options) {
-  if (options.noPo) {
-    i18n = false;
-  } else {
-    let jedInstance = options;
-    i18n = createJed(jedInstance);
-  }
-}
-
 export function setDebug() {
   LOCALE_DEBUG = true;
 }
@@ -38,14 +27,6 @@ function createJed(jedOptions) {
   };
 
   return new Jed(jedOptions);
-}
-
-function getTranslate(stringKey) {
-  if (i18n) {
-    return i18n.gettext(stringKey);
-  }
-
-  return stringKey;
 }
 
 function formatForReact(formatString, args) {
@@ -225,33 +206,59 @@ function format(formatString, args) {
   }
 }
 
-export function gettext(string, ...args) {
-  let rv = getTranslate(string);
-  if (args.length > 0) {
-    rv = format(rv, args);
+
+export class I18n {
+  constructor(options = {}) {
+    this.init(options)
+
+    this.t = this.gettext
+    this.tn = this.ngettext
+    this.tct = this.gettextComponentTemplate
   }
-  return mark(rv);
+
+  init(options = {}) {
+    if (options.noPo) {
+      this._i18n = false;
+    } else {
+      let jedInstance = options;
+      this._i18n = createJed(jedInstance);
+    }
+  }
+
+  gettext(string, ...args) {
+    let rv = this._getTranslate(string);
+    if (args.length > 0) {
+      rv = format(rv, args);
+    }
+    return mark(rv);
+  }
+
+  ngettext(singular, plural, ...args) {
+    return mark(format(this._i18n.ngettext(singular, plural, args[0] || 0), args));
+  }
+
+  /* special form of gettext where you can render nested react
+  components in template strings.  Example:
+
+  gettextComponentTemplate('Welcome. Click [link:here]', {
+  root: <p/>,
+  link: <a href="#" />
+  });
+
+  the root string is always called "root", the rest is prefixed
+  with the name in the brackets */
+  gettextComponentTemplate(template, components) {
+    let tmpl = parseComponentTemplate(this._getTranslate(template));
+    return mark(renderComponentTemplate(tmpl, components));
+  }
+
+
+  _getTranslate(stringKey) {
+    if (this._i18n) {
+      return this._i18n.gettext(stringKey);
+    }
+  
+    return stringKey;
+  }
 }
 
-export function ngettext(singular, plural, ...args) {
-  return mark(format(i18n.ngettext(singular, plural, args[0] || 0), args));
-}
-
-/* special form of gettext where you can render nested react
- components in template strings.  Example:
-
- gettextComponentTemplate('Welcome. Click [link:here]', {
- root: <p/>,
- link: <a href="#" />
- });
-
- the root string is always called "root", the rest is prefixed
- with the name in the brackets */
-export function gettextComponentTemplate(template, components) {
-  let tmpl = parseComponentTemplate(getTranslate(template));
-  return mark(renderComponentTemplate(tmpl, components));
-}
-
-export const t = gettext;
-export const tn = ngettext;
-export const tct = gettextComponentTemplate;
