@@ -10,10 +10,8 @@ React i18n
 import React from 'react'
 
 import {
-  init, 
+  createI18n
   debug, 
-  tct, 
-  t, 
 } from 'r-i18n'
 ```
 
@@ -23,7 +21,7 @@ import {
 Use [Jed](http://slexaxton.github.io/Jed) to initialize i18n in your project.
 
 ```jsx
-init({ /* jed options */ })) 
+const i18n = createI18n({ /* jed options */ })) 
 ```
 
 #### t
@@ -31,7 +29,7 @@ init({ /* jed options */ }))
 Component as placeholder
 
 ```jsx
-import {t} from 'r-i18n'
+const {t} = i18n
 
 t('Welcome to Strikingly')  
 // -> '欢迎使用 Strikingly'
@@ -53,7 +51,7 @@ t('%{author} assigned this event to %{assignee}', {
 HTML inside translated string with a root wrapper
 
 ```jsx
-import {tct} from 'r-i18n'
+const {tct} = i18n
 
 //...
 
@@ -71,13 +69,13 @@ Wrap `t` and `tct` with a wrapper `<span class="translation-wrapper"/>`
 (for React Native, it just appends a flag emoji to the message)
 
 ```jsx
-import {tct, debug} from 'r-i18n'
+import {createI18n, debug} from 'r-i18n'
 
 //...
-
+const i18n = createI18n({ /* jed options */ })) 
 debug()
 
-tct('Welcome. Click [link:here]', {
+i18n.tct('Welcome. Click [link:here]', {
   root: <p/>,
   link: <a href="#" />
 })
